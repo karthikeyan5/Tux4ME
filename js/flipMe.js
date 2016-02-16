@@ -160,6 +160,7 @@ var headingContent;
 var instructionContent;
 function gameOver()
 {
+	document.getElementById("finishButtonArea").innerHTML = '';
 	var cummulativeIndex = Math.floor((score/gameSeconds) * (60/500) * 100);
 	if(cummulativeIndex > 100)
 		cummulativeIndex = 100;
@@ -192,6 +193,7 @@ function replayGame()
 	//playpause.inputEnabled = true;
 	//timeText = null;
 	startGame = 1;
+	finishFlag = 0;
 	game.time.reset();
 	destroy.setText(" ");
 

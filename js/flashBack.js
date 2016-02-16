@@ -231,6 +231,7 @@ var headingContent;
 var instructionContent;
 function gameOver()
 {
+	document.getElementById("finishButtonArea").innerHTML = '';
 		        pauseState = 1;
 	        playpause.inputEnabled = false;
 	        //playpause.destroy();
@@ -270,6 +271,7 @@ function replayGame()
 	//playpause.inputEnabled = true;
 	//timeText = null;
 	startGame = 1;
+	finishFlag = 0;
 	game.time.reset();
 	destroy.setText(" ");
 
