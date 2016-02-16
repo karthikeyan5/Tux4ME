@@ -37,11 +37,6 @@ var sprite;
 var startScreen;
 var startButton;
 
-var startkey;
-var inputcheck;
-var inputcross;
-var pause;
-
 function create ()
 {
 
@@ -89,11 +84,6 @@ function create ()
     game.add.tween(sprite).to({ alpha : 1}, 1000, Phaser.Easing.Linear.easeInOut, true);
     //game.add.tween(sprite).to({ alpha : 0}, 5000, Phaser.Easing.Linear.easeInOut,true, 5000);
     //initialize();
-     inputcheck = game.input.keyboard.addKey(Phaser.Keyboard.ENTER);
-    inputcross = game.input.keyboard.addKey(Phaser.Keyboard.X);
-    pause = game.input.keyboard.addKey(Phaser.Keyboard.P);
-    startkey = game.input.keyboard.addKey(Phaser.Keyboard.S);
-    startkey.onUp.add(initialize,this);
     start.events.onInputUp.add(initialize);
     startScreen=game.add.sprite(0,0,'start_screen');
     startButton=game.add.sprite(560,465,'start_button');
@@ -109,13 +99,7 @@ function startingGame()
 }
 function update ()
 {
-         game.input.enabled=true;
-
-        inputcheck.onDown.add(answeredYes,this);
-        inputcheck.onUp.add(updateBox);
-
-        inputcross.onDown.add(answeredNo,this);
-        inputcross.onUp.add(updateBox);
+	updateTimer();
 
 	yes.events.onInputDown.add(answeredYes);
 	no.events.onInputDown.add(answeredNo);
@@ -123,20 +107,19 @@ function update ()
 	yes.events.onInputUp.add(updateBox);
 	no.events.onInputUp.add(updateBox);
 
-        pause.onDown.add(pauseAndPlay,this);
 	playpause.events.onInputUp.add(pauseAndPlay);
 }
 var answer = null;
 function answeredYes()
 {
-	if(game.paused === false)
+	if(pauseState === 0)
 	{
 		answer = 1;
 	}
 }
 function answeredNo()
 {
-	if(game.paused === false)
+	if(pauseState === 0)
 	{
 		answer = 0;
 	}
@@ -154,7 +137,7 @@ function updateTimer()
 	if(startGame === 1)
 	{
 	//To find and display the elapsed time.
-	if(game.paused === false)
+	if(pauseState === 0)
 	{
 		if(timeUpdateFlag === 0)
 		{
@@ -196,7 +179,7 @@ function updateTimer()
 var finishFlag = 0;
 function initialize()
 {
-	if(game.paused === false)
+	if(pauseState === 0)
 	{
 	helpText.setText('Does this image match the previous one ?');
 	helpText.alpha = 0;
@@ -217,7 +200,7 @@ var deadOne;
 var deadTwo;
 function updateBox()
 {
-	if(game.paused === false)
+	if(pauseState === 0)
 	{
 		updateScore();
 		displayShape();
@@ -249,9 +232,8 @@ var instructionContent;
 function gameOver()
 {
 	document.getElementById("finishButtonArea").innerHTML = '';
-		        game.paused = true;
+		        pauseState = 1;
 	        playpause.inputEnabled = false;
-	         game.input.keyboard.removeKey(Phaser.Keyboard.P);
 	        //playpause.destroy();
 	        destroy = game.add.text(272, 305 , 'Game Over !' , {font : "17px Arial" , fill : "#ec407a"});
 
@@ -275,10 +257,9 @@ function replayGame()
 	playpause.destroy();
 	playpause = game.add.sprite(255 , 475 , 'pp_button');
 	playpause.inputEnabled = true;
-	 pause = game.input.keyboard.addKey(Phaser.Keyboard.P);
 	ppText = game.add.text(269,488,'Click to Pause', {font : "15px Arial" , fill : "white"});
 
-	game.paused = true;
+	pauseState = 1;
 	pauseAndPlay();
 	score = 0;
 	displayScore = 0;
@@ -423,15 +404,15 @@ function animateSprite()
 }
 function pauseAndPlay()
 {
-	if(game.paused === false)
+	if(pauseState  === 0)
 	{
-		game.paused = true;
+		pauseState = 1;
 		ppText.setText('     Paused   ');
 		sprite.alpha = 0;
 	}
 	else
 	{
-		game.paused = false;
+		pauseState = 0;
 		ppText.setText('Click to Pause');
 		sprite.alpha = 1;
 

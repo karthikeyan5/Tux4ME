@@ -53,9 +53,6 @@ var myscore;
 var startScreen;
 var startButton;
 
-var inputcheck;
-var inputcross;
-var pause;
 
 // The predefined function to create the Gaming area
 function create()
@@ -89,11 +86,6 @@ function create()
 	info.setShadow(3,3, 'rgba(25,25,25,0.25)' , 8);
 	boxText = game.add.text(xTextPos, yTextPos , '' ,{ font : '50px Arial' , fill : "black"}  );
 	initialize();
-
-	 inputcheck = game.input.keyboard.addKey(Phaser.Keyboard.ENTER);
-    inputcross = game.input.keyboard.addKey(Phaser.Keyboard.X);
-    pause = game.input.keyboard.addKey(Phaser.Keyboard.P);
-
 	startScreen=game.add.sprite(0,0,'start_screen');
     startButton=game.add.sprite(560,465,'start_button');
     startButton.inputEnabled = true;
@@ -156,23 +148,14 @@ function renderBox()
 // The predefined function to be called at the rate of 10 frames per second.
 function update()
 {
-
-	game.input.enabled=true;
-
-        inputcheck.onDown.add(removeTextYes,this);
-        inputcheck.onUp.add(updateBox);
-
-        inputcross.onDown.add(removeTextNo,this);
-        inputcross.onUp.add(updateBox);
-
-        yes.events.onInputDown.add(removeTextYes);
+	updateTimer();
+	yes.events.onInputDown.add(removeTextYes);
 	no.events.onInputDown.add(removeTextNo);
 
 	yes.events.onInputUp.add(updateBox);
 	no.events.onInputUp.add(updateBox);
 
 	playPause.events.onInputUp.add(pauseAndPlay);
-        pause.onDown.add(pauseAndPlay,this);
 }
 var timer;
 var totalSeconds = 0;
@@ -188,7 +171,7 @@ function updateTimer()
 	if(startGame === 1)
 	{
 	//To find and display the elapsed time.
-	if(game.paused === false)
+	if(pauseState === 0)
 	{
 		if(timeUpdateFlag === 0)
 		{
@@ -335,7 +318,7 @@ function initialize()
 //The userdefined function that updates the box value everytime.
 function updateBox()
 {
-	if(game.paused === false)
+	if(pauseState === 0)
 	{
 		//var loosu = ' ';
 		//boxText.setText(loosu);
@@ -383,9 +366,8 @@ var instructionContent;
 function gameOver()
 {
 	document.getElementById("finishButtonArea").innerHTML = '';
-	game.paused = true;
+	pauseState = 1;
 	playPause.inputEnabled = false;
-	 game.input.keyboard.removeKey(Phaser.Keyboard.P);
 	destroy = game.add.text(272, 325 , 'Game Over !' , {font : "17px Arial" , fill : "#ec407a"});
 
 	var cummulativeIndex = Math.floor((score/gameSeconds) * (60/750) * 100);
@@ -408,10 +390,9 @@ function replayGame()
 	playPause.destroy();
 	playPause = game.add.sprite(255 , 475 , 'pp_button');
 	playPause.inputEnabled = true;
-	pause = game.input.keyboard.addKey(Phaser.Keyboard.P);
 	ppText = game.add.text(275,488,'Click to Pause', {font : "15px Arial" , fill : "white"});
 
-	game.paused = true;
+	pauseState = 1;
 	pauseAndPlay();
 	score = 0;
 	displayScore = 0;
@@ -442,7 +423,7 @@ var displayScore;
 //Helper functions : Refer render()
 function removeTextYes()
 {
-	if(game.paused === false)
+	if(pauseState === 0)
 	{
 		answer = 1;
 		var empty = ' ';
@@ -452,7 +433,7 @@ function removeTextYes()
 //Helper functions : Refer render()
 function removeTextNo()
 {
-	if(game.paused === false)
+	if(pauseState === 0)
 	{
 		answer = 0;
 		var empty = ' ';
@@ -700,9 +681,9 @@ function updateLevel()
 
 function pauseAndPlay()
 {
-	if(game.paused === false)
+	if(pauseState  === 0)
 	{
-		game.paused = true;
+		pauseState = 1;
 		ppText.setText('     Paused   ');
 		boxText.setText(' ');
 
@@ -710,7 +691,7 @@ function pauseAndPlay()
 	}
 	else
 	{
-		game.paused = false;
+		pauseState = 0;
 		ppText.setText('Click to Pause');
 		boxText.setText(' ');
 		var text = boxValue();
