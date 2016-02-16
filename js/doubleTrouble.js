@@ -9,7 +9,7 @@ function preload()
 	game.load.image('pp_button' , 'assets/images/playpause4_120_35.png');
 
   //Importing game specific assets
-	game.load.image('box', 'assets/images/doubleTrouble/displaybox_130_130.png' );
+	game.load.image('box', 'assets/images/doubleTrouble/displayBox_130_130.png' );
     game.load.image('correct' , 'assets/images/correct_60_60.png');
     game.load.image('wrong' , 'assets/images/wrong_60_60.png');
     game.load.image('living' , 'assets/images/living_30_30.png');
