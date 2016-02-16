@@ -49,6 +49,10 @@ var startButton;
 var playpause;
 var ppText;
 
+var keyleft;
+var keyright;
+var pause;
+
 function create()
 {
 	game.add.sprite(0,0,'background');
@@ -58,7 +62,7 @@ function create()
 	scrolling.autoScroll(Math.pow(-1,i)*5,0);
 	scrolling.alpha = 0.14;
 	}
-	
+
 	left = game.add.sprite(242 , 385 , 'left');
 	left.inputEnabled = true;
 	right = game.add.sprite(347, 385 , 'right');
@@ -82,9 +86,11 @@ function create()
 	timer = game.add.text(538, 19, '00:00:00' ,{font : "18px Arial" , fill : "#0097a7"});
 	myscore = game.add.text(46, 19 , '000' , {font : "18px Arial" , fill : "#0097a7"});
   	mylevel = game.add.text(311, 19 , '01' , {font : "18px Arial" , fill : "#00bfa5"});
-	
-	updateRotations();
 
+	updateRotations();
+         keyleft = game.input.keyboard.addKey(Phaser.Keyboard.LEFT);
+     keyright = game.input.keyboard.addKey(Phaser.Keyboard.RIGHT);
+        pause    = game.input.keyboard.addKey(Phaser.Keyboard.P);
 	startScreen = game.add.sprite(0,0,'start_screen');
     startButton = game.add.sprite(560,465,'start_button');
     startButton.inputEnabled = true;
@@ -103,13 +109,13 @@ function spriteCreation()
 	figSeven = game.add.sprite(375, 290, 'figure');
 
 	sprites=[figOne, figTwo, figThree, figFour, figFive, figSix, figSeven];
-	
+
 
 	for (var i = 0; i < 7; i++) {
         currSprite = sprites[i];
         currSprite.scale.setTo(0.65,0.65);
         game.physics.p2.enable(currSprite);
-		currSprite.anchor.setTo(.5, .5);		
+		currSprite.anchor.setTo(.5, .5);
 	}
 
 }
@@ -124,12 +130,22 @@ function startingGame()
 
 function update()
 {
-	updateTimer();
+updateTimer();
+
+         keyleft.onDown.add(answeredAntiClockwise,this);
+        keyleft.onUp.add(updateBox);
+
+         keyright.onDown.add(answeredClockwise,this);
+        keyright.onUp.add(updateBox);
+
 	left.events.onInputDown.add(answeredAntiClockwise);
 	left.events.onInputUp.add(updateBox);
 
+
 	right.events.onInputDown.add(answeredClockwise);
 	right.events.onInputUp.add(updateBox);
+
+         pause.onUp.add(pauseAndPlay);
 	playpause.events.onInputUp.add(pauseAndPlay);
 
 
@@ -142,19 +158,19 @@ function update()
 		else {
 			currSprite.body.rotateLeft(150);
 			rotLeft += 1;
-		}		
-	}	
+		}
+	}
 }
 
 
 function answeredAntiClockwise()
-{	
-	answered = 0;	
+{
+	answered = 0;
 }
 
 function answeredClockwise()
 {
-	answered = 1;	
+	answered = 1;
 }
 
 function updateRotations()
@@ -164,7 +180,7 @@ function updateRotations()
 	answer=10;
 	answered=19;
 
-	for (var i = 0; i < 7; i++) 
+	for (var i = 0; i < 7; i++)
 	{
 		decider[i] = game.rnd.integerInRange(1,100) % 2 ;
 	}
@@ -173,11 +189,11 @@ function updateRotations()
 
 function getCorrectAnswer()
 {
-	if ( rotLeft > rotRight ) 
+	if ( rotLeft > rotRight )
 	{
 		answer = 0;
 	}
-	else 
+	else
 	{
 		answer = 1;
 	}
@@ -187,12 +203,12 @@ var displayScore;
 
 function updateScore()
 {
-	if (answered === answer) 
+	if (answered === answer)
 	{
 		score += 25;
 		isCorrect = 1;
 	}
-	else 
+	else
 	{
 
 		lifeline--;
@@ -228,7 +244,7 @@ function updateTimer()
 {
 	if(startGame === 1)
 	{
-	if(pauseState === 0)
+	if(game.paused === false)
 	{
 		if(timeUpdateFlag === 0)
 		{
@@ -249,7 +265,7 @@ function updateTimer()
 		{
 			modsec = '0' + modsec;
 		}
-		
+
 		timeText = '0'+hours+':'+modmin+ ':' + modsec ;
 		timer.setText(timeText);
 	}
@@ -275,14 +291,15 @@ var instructionContent;
 function gameOver()
 {
 	document.getElementById("finishButtonArea").innerHTML = '';
-	 pauseState = 1;
+	 game.paused = true;
 	 playpause.inputEnabled = false;
+	    game.input.keyboard.removeKey(Phaser.Keyboard.P);
 	 destroy = game.add.text(272, 305 , 'Game Over !' , {font : "17px Arial" , fill : "#ec407a"});
 
-	 for (var i = 0; i < 7; i++) 
+	 for (var i = 0; i < 7; i++)
 	 {
         currSprite = sprites[i];
-        currSprite.destroy();	
+        currSprite.destroy();
 	}
 
 	var cummulativeIndex = Math.floor((score/gameSeconds) * (60/750) * 100);
@@ -306,9 +323,10 @@ function replayGame()
 	playpause.destroy();
 	playpause = game.add.sprite(585 , 465 , 'playPause');
 	playpause.inputEnabled = true;
+	  pause = game.input.keyboard.addKey(Phaser.Keyboard.P);
 	ppText = game.add.text(480, 495 , ' ' , {font : "15px Arial" , fill : "#eceff1"});
 
-	pauseState = 1;
+	game.paused = true;
 	pauseAndPlay();
 	score = 0;
 	displayScore = 0;
@@ -340,9 +358,9 @@ var deadTwo;
 
 function updateBox()
 {
-	
 
-	if(pauseState === 0)
+
+	if(game.paused === false)
 	{
 		getCorrectAnswer();
 	    updateScore();
@@ -418,24 +436,24 @@ function updateLife()
 
 function pauseAndPlay()
 {
-	if(pauseState  === 0) {
-		pauseState = 1;
+	if(game.paused === false) {
+		game.paused =true;
 		ppText.setText(' ');
 		ppText.setText('Game Paused');
 		for (var i = 0; i < 7; i++) {
         currSprite = sprites[i];
-        currSprite.alpha = 0;		
+        currSprite.alpha = 0;
 	    }
-		
+
 	}
 
 	else {
-		pauseState = 0;
+		game.paused = false;
 		ppText.setText(' ');
 		ppText.setText('Pause game ');
 		for (var i = 0; i < 7; i++) {
         currSprite = sprites[i];
-        currSprite.alpha = 1;		
+        currSprite.alpha = 1;
 	    }
 	}
 }
@@ -444,8 +462,3 @@ function finishGame()
 {
 	gameOver();
 }
-
-
-
-
-
