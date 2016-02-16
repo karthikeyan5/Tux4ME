@@ -51,7 +51,7 @@ function gameLoader(number)
 	}
 	else if(num === 5)
 	{
-	var putContent = '<iframe src="http://karthikeyan5.github.io/Tux4ME/passiveOn.html" width="100%" height="100%" frameborder="0" marginheight="0" marginwidth="0">Loading Please wait</iframe> ';
+	var putContent = '<iframe src="http://karthikeyan5.github.io/Tux4ME/PassiveOn.html" width="100%" height="100%" frameborder="0" marginheight="0" marginwidth="0">Loading Please wait</iframe> ';
 	document.getElementById('GamesPage').innerHTML = putContent;
 
 	var puttoolbarContent = '<paper-toolbar style="background-color:#e91e63"><paper-fab onclick="goBack()"  style="background-color:#ffffff; color:#e91e63" icon="arrow-back" mini></paper-fab><span>&nbsp;&nbsp;&nbsp;&nbsp;</span><div style="font-family:Georgia;font-style: italic;font-size: 15px">Tux4Me</div><iron-icon icon="chevron-right"></iron-icon><div style="font-family:Georgia;font-style: italic;font-size: 15px">Reasoning</div><iron-icon icon="chevron-right"></iron-icon><div style="font-family:Georgia;font-style: italic;font-size: 15px">Passive On</div><iron-icon icon="chevron-right"></iron-icon><div style="font-family:Georgia;font-style: italic;font-size: 15px">Play</div></paper-toolbar>'
@@ -99,7 +99,7 @@ function gameLoader(number)
 	}
 	else if(num === 11)
 	{
-	var putContent = '<iframe src="http://karthikeyan5.github.io/Tux4ME/motioncommotion.html" width="100%" height="100%" frameborder="0" marginheight="0" marginwidth="0">Loading Please wait</iframe> ';
+	var putContent = '<iframe src="http://karthikeyan5.github.io/Tux4ME/motionCommotion.html" width="100%" height="100%" frameborder="0" marginheight="0" marginwidth="0">Loading Please wait</iframe> ';
 	document.getElementById('GamesPage').innerHTML = putContent;
 
 	var puttoolbarContent = '<paper-toolbar style="background-color:#01579b"><paper-fab onclick="goBack()"  style="background-color:#ffffff; color:#01579b" icon="arrow-back" mini></paper-fab><span>&nbsp;&nbsp;&nbsp;&nbsp;</span><div style="font-family:Georgia;font-style: italic;font-size: 15px">Tux4Me</div><iron-icon icon="chevron-right"></iron-icon><div style="font-family:Georgia;font-style: italic;font-size: 15px">Attention</div><iron-icon icon="chevron-right"></iron-icon><div style="font-family:Georgia;font-style: italic;font-size: 15px">Motion Commotion</div><iron-icon icon="chevron-right"></iron-icon><div style="font-family:Georgia;font-style: italic;font-size: 15px">Play</div></paper-toolbar>'
