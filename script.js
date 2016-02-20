@@ -19,7 +19,7 @@ function gameLoader(number)
 	//console.log('force-narrow="true"');
 	if(num === 1)
 	{
-	var putContent = '<iframe src="http://karthikeyan5.github.io/Tux4ME/migratingFlocks.html" width="100%" height="100%" frameborder="0" marginheight="0" marginwidth="0">Loading Please wait</iframe> ';
+	var putContent = '<iframe src="'+ document.URL.split("index.html",1)+'/migratingFlocks.html" width="100%" height="100%" frameborder="0" marginheight="0" marginwidth="0">Loading Please wait</iframe> ';
 	document.getElementById('GamesPage').innerHTML = putContent;
 
 	var puttoolbarContent = '<paper-toolbar style="background-color:#01579b"><paper-fab onclick="goBack()"  style="background-color:#ffffff; color:#01579b" icon="arrow-back" mini></paper-fab><span>&nbsp;&nbsp;&nbsp;&nbsp;</span><div style="font-family:Georgia;font-style: italic;font-size: 15px">Tux4Me</div><iron-icon icon="chevron-right"></iron-icon><div style="font-family:Georgia;font-style: italic;font-size: 15px">Attention</div><iron-icon icon="chevron-right"></iron-icon><div style="font-family:Georgia;font-style: italic;font-size: 15px">Migrating flocks</div><iron-icon icon="chevron-right"></iron-icon><div style="font-family:Georgia;font-style: italic;font-size: 15px">Play</div></paper-toolbar>'
