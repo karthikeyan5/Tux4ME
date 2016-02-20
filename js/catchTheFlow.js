@@ -150,28 +150,28 @@ function update()
 var answer = null;
 function answeredUp()
 {
-	if(game.paused === false)
+	if(pauseState === 0)
 	{
 		answer = 3; //up = 3
 	}
 }
 function answeredDown()
 {
-	if(game.paused === false)
+	if(pauseState === 0)
 	{
 		answer = 1; //Down = 1
 	}
 }
 function answeredLeft()
 {
-	if(game.paused === false)
+	if(pauseState === 0)
 	{
 		answer = 0; //left = 0
 	}
 }
 function answeredRight()
 {
-	if(game.paused === false)
+	if(pauseState === 0)
 	{
 		answer = 2; //Right = 2
 	}
@@ -190,7 +190,7 @@ function updateTimer()
 	if(startGame === 1)
 	{
 	//To find and display the elapsed time.
-	if(game.paused === false)
+	if(pauseState === 0)
 	{
 		if(timeUpdateFlag === 0)
 		{
@@ -234,7 +234,7 @@ var deadOne;
 var deadTwo;
 function updateBox()
 {
-	if(game.paused === false)
+	if(pauseState === 0)
 	{
 		updateScore();
 		leaf.destroy();
@@ -266,9 +266,8 @@ var headingContent;
 var instructionContent;
 function gameOver()
 {
-	 game.paused = true;
+	 pauseState = 1;
 	 playpause.inputEnabled = false;
-	  game.input.keyboard.removeKey(Phaser.Keyboard.P); 
 	 destroy = game.add.text(272, 305 , 'Game Over !' , {font : "17px Arial" , fill : "#ec407a"});
 
 	leaf.destroy();
@@ -293,10 +292,9 @@ function replayGame()
 	playpause.destroy();
 	playpause = game.add.sprite(585 , 465 , 'playPause');
 	playpause.inputEnabled = true;
-	 pause = game.input.keyboard.addKey(Phaser.Keyboard.P);
 	ppText = game.add.text(480, 495 , ' ' , {font : "15px Arial" , fill : "#eceff1"});
 
-	game.paused = true;
+	pauseState = 1;
 	pauseAndPlay();
 	score = 0;
 	displayScore = 0;
@@ -629,9 +627,9 @@ function displayLeaves()
 
 function pauseAndPlay()
 {
-	if(game.paused === false)
+	if(pauseState  === 0)
 	{
-	         game.paused = true  ;
+		pauseState = 1;
 		ppText.setText(' ');
 		ppText.setText('Game Paused');
 		leaf.alpha = 0;
@@ -639,7 +637,7 @@ function pauseAndPlay()
 	}
 	else
 	{
-		game.paused = false;
+		pauseState = 0;
 		ppText.setText(' ');
 		ppText.setText('Pause game ');
 		leaf.alpha = 1;
